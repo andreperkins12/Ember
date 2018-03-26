@@ -2,6 +2,7 @@
 A Decentralized Social Media Platform
 ## Getting Started
 Project Proposal Link: https://docs.google.com/document/d/1W5TmUFKCSfSqorIuA3BbBc02CKYM8o5GiFr_FwXXO0E/edit?usp=sharing
+Node JS: https://github.com/sidorares/node-mysql2
 ### Prerequisites
 
 What things you need to install the software and how to install them
