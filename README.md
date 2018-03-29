@@ -4,11 +4,10 @@ A Decentralized Social Media Platform
 Project Proposal Link: https://docs.google.com/document/d/1W5TmUFKCSfSqorIuA3BbBc02CKYM8o5GiFr_FwXXO0E/edit?usp=sharing
 Node JS: https://github.com/sidorares/node-mysql2
 ### Prerequisites
-'$cd Sign_in
- $npm start'
 
 ```
-Give examples
+$cd Sign_in
+$cd npm start
 ```
 
 ### Installing
