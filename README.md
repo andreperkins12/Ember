@@ -7,7 +7,7 @@ Node JS: https://github.com/sidorares/node-mysql2
 
 ```
 $cd Sign_in
-$cd npm start
+$npm start
 ```
 
 ### Installing
