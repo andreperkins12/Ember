@@ -23,6 +23,7 @@
     "opn": "^4.0.2"
   },
   "dependencies": {
-    "blockstack": "^0.15.0"
+    "blockstack": "^0.15.0",
+    "blockstack-signin-btn": "^1.0.3"
   }
 }

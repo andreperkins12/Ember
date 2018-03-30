@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     blockstack.signUserOut(window.location.href)
   })
 
+var block_btn = document.getElementById('signin-button');
   function showProfile(profile) {
     var person = new blockstack.Person(profile)
     document.getElementById('heading-name').innerHTML = person.name() ? person.name() : "Nameless Person"
@@ -21,6 +22,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
   if (blockstack.isUserSignedIn()) {
     var profile = blockstack.loadUserData().profile
       showProfile(profile)
+      block_btn.style.display === "none";
   } else if (blockstack.isSignInPending()) {
     blockstack.handlePendingSignIn().then(function(userData) {
       window.location = window.location.origin
