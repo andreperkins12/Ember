@@ -15,17 +15,27 @@ var block_btn = document.getElementById('signin-button');
     if(person.avatarUrl()) {
       document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
     }
-    document.getElementById('section-1').style.display = 'none'
-    document.getElementById('section-2').style.display = 'block'
+  //  document.getElementById('section-1').style.display = 'none'
+  //  document.getElementById('section-2').style.display = 'block'
   }
 
   if (blockstack.isUserSignedIn()) {
     var profile = blockstack.loadUserData().profile
       showProfile(profile)
-      block_btn.style.display === "none";
+      block_btn.style.display === 'hidden';
+      window.location.href = 'portal.html';
+
   } else if (blockstack.isSignInPending()) {
     blockstack.handlePendingSignIn().then(function(userData) {
       window.location = window.location.origin
     })
   }
 })
+
+
+function signOut(){
+
+    event.preventDefault()
+    blockstack.signUserOut(window.location.href)
+    window.location.href = 'index.html';
+}
