@@ -7,6 +7,8 @@ This is a project produced for the CPSC408 Database Management class at Chapman 
 Project Proposal Link: https://docs.google.com/document/d/1W5TmUFKCSfSqorIuA3BbBc02CKYM8o5GiFr_FwXXO0E/edit?usp=sharing
 
 Node JS: https://github.com/sidorares/node-mysql2
+
+Database Schema: https://docs.google.com/spreadsheets/d/1CML76JHSFNwXS_2kw6jo811V4saV_yRs_DvFc4VN-uY/edit?usp=sharing
 ```
 Blockstack Resources: https://blockstack.github.io/blockstack.js/index.html#loaduserdata
 ```
