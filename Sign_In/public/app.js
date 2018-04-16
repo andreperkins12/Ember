@@ -34,8 +34,18 @@ var block_btn = document.getElementById('signin-button');
 
 
 function signOut(){
-
     event.preventDefault()
     blockstack.signUserOut(window.location.href)
     window.location.href = 'index.html';
+}
+
+
+/// PORTAL JS //////
+
+function boom() {
+  blockstack.putFile("/hello.txt", "hello world!")
+  .then(() => {
+    alert("reached Put file");
+     // /hello.txt exists now, and has the contents "hello world!".
+  })
 }

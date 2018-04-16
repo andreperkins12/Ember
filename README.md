@@ -11,6 +11,9 @@ Node JS: https://github.com/sidorares/node-mysql2
 Database Schema: https://docs.google.com/spreadsheets/d/1CML76JHSFNwXS_2kw6jo811V4saV_yRs_DvFc4VN-uY/edit?usp=sharing
 ```
 Blockstack Resources: https://blockstack.github.io/blockstack.js/index.html#loaduserdata
+
+BlockStack Storage Link: https://github.com/blockstack/blockstack.js/blob/master/src/storage/README.md
+
 ```
 ### Prerequisites
 

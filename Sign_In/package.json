@@ -24,6 +24,7 @@
   },
   "dependencies": {
     "blockstack": "^0.15.0",
-    "blockstack-signin-btn": "^1.0.3"
+    "blockstack-signin-btn": "^1.0.3",
+    "react-router-dom": "^4.2.2"
   }
 }
