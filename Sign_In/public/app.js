@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     var scopes = DEFAULT_SCOPE
     var authRequest = blockstack.makeAuthRequest(blockstack.generateAndStoreTransitKey(), redirectURI, manifestURI, scopes)
     blockstack.redirectToSignInWithAuthRequest(authRequest, BLOCKSTACK_HOST)
-    
+
     event.preventDefault()
 
   })
@@ -22,7 +22,15 @@ var block_btn = document.getElementById('signin-button');
     var person = new blockstack.Person(profile)
     document.getElementById('heading-name').innerHTML = person.name() ? person.name() : "Nameless Person"
     if(person.avatarUrl()) {
-      document.getElementById('avatar-image').setAttribute('src', person.avatarUrl())
+      var image_src = person.avatarUrl().src;
+      var avatar = document.getElementById('avatar-image');
+      alert(image_src);
+      alert(person.avatarUrl());
+      avatar = person.avatarUrl();
+      console.log(person.avatarUrl());
+      alert(person.avatarUrl());
+      alert(avatar);
+      alert("AVATAR");
     }
   //  document.getElementById('section-1').style.display = 'none'
   //  document.getElementById('section-2').style.display = 'block'
@@ -51,10 +59,39 @@ function signOut(){
 
 /// PORTAL JS //////
 
-function boom() {
-  blockstack.putFile("/hello.txt", "hello world!")
+
+function saveNewStatus() {
+
+  var the_post = document.getElementById('post_content');
+  var statusIndex = 0;
+
+  const options = { encrypt: true }
+
+  let status = {
+  text: the_post,
+  created_at: Date.now()
+}
+
+
+blockstack.putFile('statuses.json', JSON.stringify(status), options)
   .then(() => {
-    alert("reached Put file");
-     // /hello.txt exists now, and has the contents "hello world!".
+    alert("REACHED");
+    getPost();
   })
+}
+
+function getPost(){
+
+  let options = {
+  decrypt: true
+  }
+
+  blockstack.getFile("statuses.json",options)
+  .then((fileContents) => {
+
+   //get the contents of the file /hello.txt
+   alert("FILE CONTENTS\n" + fileContents);
+  //assert(fileContents === fileContents);
+});
+
 }
