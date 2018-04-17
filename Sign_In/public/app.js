@@ -1,7 +1,16 @@
 document.addEventListener("DOMContentLoaded", function(event) {
   document.getElementById('signin-button').addEventListener('click', function(event) {
+
+    var BLOCKSTACK_HOST = 'https://browser.blockstack.org/auth'
+    var DEFAULT_SCOPE = ['store_write','publish_data']
+    var redirectURI = `${window.location.origin}/`
+    var manifestURI = `${window.location.origin}/manifest.json`
+    var scopes = DEFAULT_SCOPE
+    var authRequest = blockstack.makeAuthRequest(blockstack.generateAndStoreTransitKey(), redirectURI, manifestURI, scopes)
+    blockstack.redirectToSignInWithAuthRequest(authRequest, BLOCKSTACK_HOST)
+    
     event.preventDefault()
-    blockstack.redirectToSignIn()
+
   })
   document.getElementById('signout-button').addEventListener('click', function(event) {
     event.preventDefault()
