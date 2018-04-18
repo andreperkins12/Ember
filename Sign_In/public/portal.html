@@ -9,14 +9,14 @@
   <link rel="stylesheet" href="css/portal_style.css">
   <script src="bundle.js"></script>
   <script src="app.js"></script>
-<link rel='stylesheet' href='https://fonts.googleapis.com/css?family=Open+Sans'>
+<link href="https://fonts.googleapis.com/css?family=Quicksand" rel="stylesheet">
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
-html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
+html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 </style>
 
 </head>
-<body class="w3-theme-l5">
+<body class="w3-theme-l5" onload="retreiveUserProfile()">
 
 <!-- Navbar -->
 <div class="w3-top">
@@ -48,13 +48,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
       <!-- Profile -->
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
-         <h4 class="w3-center">My Profile</h4>
-         <p class="w3-center"><img id="avatar-image" class="w3-circle" style="height:106px;width:106px"></p>
+         <h4 class="w3-center" id="name-display"> </h4>
+         <p class="w3-center"><img  id="avatar-image" class="w3-center w3-circle" style="height:106px;width:106px"> </img> </p>
          <hr>
 
-         <p><i class="fa fa-pencil fa-fw w3-margin-right w3-text-theme"></i> Designer, UI</p>
-         <p><i class="fa fa-home fa-fw w3-margin-right w3-text-theme"></i> London, UK</p>
-         <p><i class="fa fa-birthday-cake fa-fw w3-margin-right w3-text-theme"></i> April 1, 1988</p>
+         <p> <i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme">  </i> </p>
          <a><p onclick="signOut()"><i href="#" class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> Sign Out</p></a>
         </div>
       </div>
@@ -80,8 +78,8 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">What's On Your Mind?</h6>
-              <p id="post_content" contenteditable="true" class="w3-border w3-padding" > </p>
-              <button onclick="saveNewStatus()" type="button" class="w3-button w3-theme"><i class="fa fa-pencil"></i> Post</button>
+              <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"></p>
+              <button type="button" class="w3-button w3-theme" onclick="saveNewStatus()"><i class="fa fa-pencil" ></i> Post</button>
 							<button  type="file" class="w3-button w3-theme"><i class="fa fa-photo" type="file"></i> Image/Video</button>
 
             </div>
@@ -89,10 +87,13 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
         </div>
       </div>
 
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
+		<p id="theStat">  </p>
+
+      <div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br>
         <img src=" " alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
         <span class="w3-right w3-opacity">1 min</span>
         <h4>John Doe</h4><br>
+
         <hr class="w3-clear">
         <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
           <div class="w3-row-padding" style="margin:0 -16px">
@@ -103,31 +104,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: "Open Sans", sans-serif}
               <img src=" " style="width:100%" alt="Nature" class="w3-margin-bottom">
           </div>
         </div>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> &nbsp;Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> &nbsp;Comment</button>
+        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button>
+        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button>
       </div>
 
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src=" " alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">16 min</span>
-        <h4>Jane Doe</h4><br>
-        <hr class="w3-clear">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> &nbsp;Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> &nbsp;Comment</button>
-      </div>
-
-      <div class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src=" " alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">32 min</span>
-        <h4>Angie Jane</h4><br>
-        <hr class="w3-clear">
-        <p>Have you seen this?</p>
-        <img src=" " style="width:100%" class="w3-margin-bottom">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> &nbsp;Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> &nbsp;Comment</button>
-      </div>
 
     <!-- End Middle Column -->
     </div>
