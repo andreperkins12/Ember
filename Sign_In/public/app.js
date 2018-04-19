@@ -23,16 +23,8 @@ var block_btn = document.getElementById('signin-button');
     document.getElementById('heading-name').innerHTML = person.name() ? person.name() : "Nameless Person"
     if(person.avatarUrl()) {
     var image_src = person.avatarUrl();
-    alert(person.avatarUrl());
-    alert("COMPLETE");
-
     }
-
-  //  document.getElementById('section-1').style.display = 'none'
-  //  document.getElementById('section-2').style.display = 'block'
   }
-
-
 
   if (blockstack.isUserSignedIn()) {
     var profile = blockstack.loadUserData().profile
@@ -47,23 +39,6 @@ var block_btn = document.getElementById('signin-button');
   }
 })
 
-
-var statuses = [];
-
-
-  this.state = {
-      person: {
-        name() {
-          return 'Anon';
-        },
-      },
-      username: "",
-      newStatus: "",
-      statuses: [],
-      statusIndex: 0,
-      isLoading: false
-    };
-
 function signOut(){
     event.preventDefault()
     blockstack.signUserOut(window.location.href)
@@ -73,10 +48,12 @@ function signOut(){
 
 /// PORTAL JS //////
 const user_name_disp = document.getElementById('name-display');
+let statuses = [];
+const userData = blockstack.loadUserData();
 function retreiveUserProfile(){
 
   fetchData();
-  const userData = blockstack.loadUserData();
+
 
   console.log(userData);
   const user_Name = userData.profile.name;
@@ -97,17 +74,26 @@ function fetchData(){
      decrypt: true
    }
 
-
-  blockstack.getFile("statuses.json",options)
+  blockstack.getFile("s.json",options)
   .then((fileContents) => {
    //get the contents of the file /hello.txt
-  var status_content = JSON.parse(fileContents);
-  statuses.unshift(status_content.text);
 
-  console.log(statuses.unshift(status_content.text));
+   var status_content = JSON.parse(fileContents || '[]');
 
-   document.getElementById('theStat').innerHTML =
-   '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">1 min</span> <h4>John Doe</h4><br><hr class="w3-clear"><p>' + status_content.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+    //console.log(JSON.parse(fileContents));
+
+
+    for (var i = 0; i < fileContents.length; i++) {
+
+    var post_area = document.createElement('div');
+    post_area.innerHTML =
+    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status_content.created_at + ' min</span> <h4>' + status_content.user + '</h4><br><hr class="w3-clear"><p>' + status_content.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+
+    document.getElementById('theStat').appendChild(post_area);
+    }
+
+
+//  console.log(status_content);
 
 
   });
@@ -118,17 +104,11 @@ function handlenewStatusChange( ){
   this.setState({newStatus: event.target.value});
 }
 
-function handlenewStatusSubmit( ){
-  alert("REACHED");
-console.log("YOO");
-//  this.setState({  newStatus: "" });
-}
-
 
 function saveNewStatus() {
 
-  var the_post = document.getElementById('post_content');
-
+  var counter = 0;
+  const the_post = document.getElementById('post_content');
 
 
   let options = {
@@ -137,24 +117,31 @@ function saveNewStatus() {
 
   let status = {
     text: the_post.innerHTML,
+    user:userData.profile.name,
     created_at: Date.now()
   }
 
-  let statuses = status;
 
-  //statuses.unshift(status);
+statuses.unshift(status);
 
-blockstack.putFile("statuses.json",JSON.stringify(status),options)
+blockstack.putFile("s.json",JSON.stringify(status),options)
   .then(() => { //POST STATUSES
-  //  alert("REACHED");
-    //statuses.push(status);
-    fetchData();
+
+
+    var post_area = document.createElement('div');
+    post_area.innerHTML =
+    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status.created_at + ' min</span> <h4>' + status.user + '</h4><br><hr class="w3-clear"><p>' + status.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+    document.getElementById('theStat').appendChild(post_area);
+
   })
 }
 
+
+/*
 function componentWillMount(){
   this.setState({
     person: new Person(loadUserData().profile),
     username: loadUserData.username
   });
 }
+*/
