@@ -17,6 +17,19 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
 </head>
 <body class="w3-theme-l5" onload="retreiveUserProfile()">
+	<div id='loader'>
+		<div class="spinner">
+  <span class="ball-1"></span>
+  <span class="ball-2"></span>
+  <span class="ball-3"></span>
+  <span class="ball-4"></span>
+  <span class="ball-5"></span>
+  <span class="ball-6"></span>
+  <span class="ball-7"></span>
+  <span class="ball-8"></span>
+</div>
+	</div>
+
 
 <!-- Navbar -->
 <div class="w3-top">
@@ -89,25 +102,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
 		<p id="theStat">  </p>
 
-      <div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br>
-        <img src=" " alt="Avatar" class="w3-left w3-circle w3-margin-right" style="width:60px">
-        <span class="w3-right w3-opacity">1 min</span>
-        <h4>John Doe</h4><br>
-
-        <hr class="w3-clear">
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
-          <div class="w3-row-padding" style="margin:0 -16px">
-            <div class="w3-half">
-              <img src=" " style="width:100%" alt="Northern Lights" class="w3-margin-bottom">
-            </div>
-            <div class="w3-half">
-              <img src=" " style="width:100%" alt="Nature" class="w3-margin-bottom">
-          </div>
-        </div>
-        <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button>
-        <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button>
-      </div>
-
 
     <!-- End Middle Column -->
     </div>
@@ -116,27 +110,27 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
     <div class="w3-col m2">
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
-          <p>Upcoming Events:</p>
-          <img src="" alt="Forest" style="width:100%;">
-          <p><strong>Holiday</strong></p>
-          <p>Friday 15:00</p>
-          <p><button class="w3-button w3-block w3-theme-l4">Info</button></p>
+          <p> .. .. . . .</p>
+
+          <p><strong> ...  </strong></p>
+          <p> .. . . . .</p>
+          <p><button class="w3-button w3-block w3-theme-l4"> Profile</button></p>
         </div>
       </div>
       <br>
 
     <!-- End Right Column -->
     </div>
-
   <!-- End Grid -->
   </div>
-
 <!-- End Page Container -->
 </div>
 <br>
 
 
 <script>
+
+
 // Accordion
 function myFunction(id) {
     var x = document.getElementById(id);
@@ -160,6 +154,8 @@ function openNav() {
     }
 }
 </script>
+
+
 
 </body>
 </html>

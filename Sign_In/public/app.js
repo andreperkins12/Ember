@@ -46,55 +46,52 @@ function signOut(){
 }
 
 
-/// PORTAL JS //////
-const user_name_disp = document.getElementById('name-display');
-let statuses = [];
-const userData = blockstack.loadUserData();
-function retreiveUserProfile(){
+///// ---------  PORTAL JS ------------- //////
+
+var statuses = new Array();
+const userData = blockstack.loadUserData(); //call returns blockstack credentials
+
+function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
   fetchData();
+  const user_Name = userData.profile.name; //User Blockstack name
+  const user_blockID = userData.appPrivateKey; //Block ID
 
+    document.getElementById('name-display').innerHTML = user_Name; //Display profile user name
+    document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
+    document.getElementById('home-hub').innerHTML = "" + userData.profile.description; //Display user description
 
-  console.log(userData);
-  const user_Name = userData.profile.name;
-  const user_blockID = userData.appPrivateKey;
-
-    document.getElementById('name-display').innerHTML = user_Name;
-    document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl;
-    document.getElementById('home-hub').innerHTML = "" + userData.profile.description;
-
+    console.log(userData);
     console.log("User Name\n " + user_Name +
     " Block ID: " + user_blockID + " " + userData.profile.account);
-  //  alert("User is Not Signed in");
 }
+
+var status_data = localStorage.getItem('posts') || "";
+var statuses = [status_data],
+    data;
+
 
 function fetchData(){
 
-  let options = {
-     decrypt: true
-   }
+  let options = {decrypt: true} //decrypt json file contents
+
+console.log("LOCAL STORAGE: "  + statuses);
 
   blockstack.getFile("s.json",options)
   .then((fileContents) => {
-   //get the contents of the file /hello.txt
 
-   var status_content = JSON.parse(fileContents || '[]');
+    //alert(JSON.parse(fileContents)|| "");
 
-    //console.log(JSON.parse(fileContents));
+   var status_content = JSON.parse(fileContents);
 
-
-    for (var i = 0; i < fileContents.length; i++) {
+    for (var i = 0; i < status_content.length; i++) {
+      console.log(status_content);
+    }
 
     var post_area = document.createElement('div');
     post_area.innerHTML =
     '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status_content.created_at + ' min</span> <h4>' + status_content.user + '</h4><br><hr class="w3-clear"><p>' + status_content.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
-
     document.getElementById('theStat').appendChild(post_area);
-    }
-
-
-//  console.log(status_content);
-
 
   });
 }
@@ -104,37 +101,38 @@ function handlenewStatusChange( ){
   this.setState({newStatus: event.target.value});
 }
 
-
+/* ////// SAVE NEW POSTS //////// */
 function saveNewStatus() {
 
-  var counter = 0;
   const the_post = document.getElementById('post_content');
 
+  let options = {encrypt: true};
 
-  let options = {
-     encrypt: true
-   }
 
-  let status = {
+  let posts = JSON.stringify({
     text: the_post.innerHTML,
     user:userData.profile.name,
     created_at: Date.now()
-  }
+  },['text', 'user', 'created_at'],
+  '\t');
 
 
-statuses.unshift(status);
+ statuses.unshift(posts);
+ localStorage.setItem('posts', statuses);
 
-blockstack.putFile("s.json",JSON.stringify(status),options)
+blockstack.putFile("s.json",JSON.stringify(statuses),options)
   .then(() => { //POST STATUSES
-
 
     var post_area = document.createElement('div');
     post_area.innerHTML =
-    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status.created_at + ' min</span> <h4>' + status.user + '</h4><br><hr class="w3-clear"><p>' + status.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
-    document.getElementById('theStat').appendChild(post_area);
+    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + posts.created_at + ' min</span> <h4>' + posts.user + '</h4><br><hr class="w3-clear"><p>' + posts.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
 
+    the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
+    document.getElementById('theStat').appendChild(post_area);
   })
 }
+
+
 
 
 /*
