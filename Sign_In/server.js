@@ -35,15 +35,80 @@ app.listen(port, (err) => {
 app.use(bodyParser.json());
 
 /*
-Add Contact Information
-name, gender, birthday, hometown, title, blockstackID
+New Blockstack ID? Then call this
+Use the blockstack ID
  */
-app.post('/userinfo', (req, res) => {
+app.post('/api/v1/newuser', (req, res) => {
   connection.query(
-    'INSERT INTO `UserContacts` (Name,Gender,Birthday,Hometown,Title) VALUES(?,?,?,?,?);',
-    ['Xavi','M','2018-04-12 00:00:00','Manila','Software Engineer'],
-    function(err, results) {
+    'INSERT INTO UserBlockstackID (BlockstackID) VALUES (?)',
+    [req.body.blockstack_id],
+    (err, results) => {
+      if (err) res.status(400).send(err);
       console.log(results);
+      res.status(200).send();
+    }
+  );
+});
+
+// connection.beginTransaction(function(err) {
+//   if (err) { throw err; }
+//   connection.query('INSERT INTO UserPosts SET ResourceURI=?', req.body.post_uri, function (error, results, fields) {
+//     if (error) {
+//       return connection.rollback(function() {
+//         throw error;
+//       });
+//     }
+//     var postID = results.insertId;
+//     connection.query('INSERT INTO UserImages (ResourceURI,PostID) VALUES (?,?)', [req.body.image_uri,postID], function (error, results, fields) {
+//       if (error) {
+//         return connection.rollback(function() {
+//           throw error;
+//         });
+//       }
+//       connection.commit(function(err) {
+//         if (err) {
+//           return connection.rollback(function() {
+//             throw err;
+//           });
+//         }
+//         console.log('success!');
+//         res.status(200).send();
+//       });
+//     });
+//   });
+// });
+
+app.get('/api/v1/bid',(req,res) => {
+  let id = req.query['blockstack_id'];
+  connection.query(
+    'SELECT cid FROM UserBlockstackID WHERE BlockstackID=?',
+    [id],
+    (err, results) => {
+      console.log(results);
+      res.status(200).send();
+    });
+});
+
+
+/*
+Add Contact Information
+blockstack_id, name, gender, birthday, hometown, title
+ */
+app.post('/api/v1/usercontact', (req, res) => {
+  connection.query(
+    'SELECT cid FROM UserBlockstackID WHERE BlockstackID=?',
+    [req.body.blockstack_id],
+    (err, results) => {
+      var cid = results.cid;
+      connection.query(
+        'INSERT INTO UserContacts (Name,Gender,Birthday,Hometown,Title) VALUES(?,?,?,?,?)',
+        [req.body.name,req.body.gender,req.body.birthday,req.body.hometown,req.body.title],
+        (err, results) => {
+          if (err) res.status(400).send(err);
+          console.log(results);
+          res.status(200).send();
+        }
+      );
     }
   );
 });
@@ -52,14 +117,15 @@ app.post('/userinfo', (req, res) => {
 Add User Email
 blockstackID, email
  */
-app.post('/email', (req, res) => {
-
+app.post('/api/v1/useremail', (req, res) => {
   connection.query(
-    'INSERT INTO UserEmail'
-  );
-
-  connection.query(
-    'INSERT INTO UserEmail ('
+    'INSERT INTO UserEmail (Email) VALUES (?)',
+    [req.body.email],
+    (err, results) => {
+      if (err) res.status(400).send(err);
+      console.log(results);
+      res.status(200).send();
+    }
   );
 });
 
@@ -67,8 +133,16 @@ app.post('/email', (req, res) => {
 Add Login Time
 blockstackID, time
  */
-app.post('/logintime', (req,res) => {
-
+app.post('/api/v1/logintime', (req,res) => {
+  connection.query(
+    'INSERT INTO UserLoginTimes (Login) VALUES (?)',
+    [req.body.login_time],
+    (err, results) => {
+      if (err) res.status(400).send(err);
+      console.log(results);
+      res.status(200).send();
+    }
+  );
 });
 
 /*
@@ -81,14 +155,64 @@ app.post('/follower', (req,res) => {
 });
 
 /*
-Add User Post
+Add Post with Text
 user: blockstackID,
 uri: resourceURI
  */
-app.post('/userpost', (req,res) => {
-
+app.post('/textpost', (req,res) => {
+  connection.query(
+    'INSERT INTO UserPosts (ResourceURI) VALUES (?)',
+    [req.body.resource_uri],
+    (err, results) => {
+      if (err) res.status(400).send(err);
+      console.log(results);
+      res.status(200).send();
+    }
+  );
 });
 
-app.get('/posts', (req,res) => {
-
+/*
+Add Post with Image and Text
+ */
+app.post('/imagepost', (req,res) => {
+  connection.beginTransaction(function(err) {
+    if (err) { throw err; }
+    connection.query('INSERT INTO UserPosts SET ResourceURI=?', req.body.post_uri, function (error, results, fields) {
+      if (error) {
+        return connection.rollback(function() {
+          throw error;
+        });
+      }
+      var postID = results.insertId;
+      connection.query('INSERT INTO UserImages (ResourceURI,PostID) VALUES (?,?)', [req.body.image_uri,postID], function (error, results, fields) {
+        if (error) {
+          return connection.rollback(function() {
+            throw error;
+          });
+        }
+        connection.commit(function(err) {
+          if (err) {
+            return connection.rollback(function() {
+              throw err;
+            });
+          }
+          console.log('success!');
+          res.status(200).send();
+        });
+      });
+    });
+  });
 });
+
+app.post('/follower', (req,res) => {
+  connection.query(
+    'INSERT INTO UserFollowers (ProfileID) VALUES (?)',
+    [req.body.follower_id],
+    (err, results) => {
+      if (err) res.status(400).send(err);
+      console.log(results);
+      res.status(200).send();
+    }
+  );
+});
+
