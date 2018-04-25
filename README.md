@@ -22,6 +22,10 @@ $ cd Sign_in
 $ npm start
 ```
 
+```
+$ docker run --name ember-db -e MYSQL_ROOT_PASSWORD=my-secret-pw -e MYSQL_DATABASE=ember -e MYSQL_USER=ember_user -e MYSQL_PASSWORD=ember_pwd -p 3306:3306 -d mysql:5.7.22
+```
+
 ### Installing
 
 A step by step series of examples that tell you have to get a development env running
