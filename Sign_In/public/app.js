@@ -1,9 +1,3 @@
-const userData = blockstack.loadUserData(); //call returns blockstack credentials
-const user_Name = userData.profile.name; //User Blockstack name
-const user_blockID = userData.appPrivateKey; //Block ID
-const user_Title = userData.profile.description;
-const user_ID = userData.profile.username;
-
 document.addEventListener("DOMContentLoaded", function(event) {
   document.getElementById('signin-button').addEventListener('click', function(event) {
 
@@ -57,6 +51,13 @@ var statuses = new Array(); //posts aka statuses
 
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
+
+  const userData = blockstack.loadUserData(); //call returns blockstack credentials
+  const user_Name = userData.profile.name; //User Blockstack name
+  const user_blockID = userData.appPrivateKey; //Block ID
+  const user_Title = userData.profile.description;
+  const user_ID = userData.profile.username;
+
 
   fetchData(); //fetching data for refresh
 
