@@ -15,6 +15,10 @@ Blockstack Resources: https://blockstack.github.io/blockstack.js/index.html#load
 BlockStack Storage Link: https://github.com/blockstack/blockstack.js/blob/master/src/storage/README.md
 
 ```
+
+# Postman API
+https://documenter.getpostman.com/collection/view/83716-0e7bb910-0e2f-55db-88fb-902b5b465e3a
+
 ### Prerequisites
 
 ```
