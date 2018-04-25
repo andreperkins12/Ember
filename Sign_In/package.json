@@ -26,6 +26,7 @@
     "blockstack": "^0.15.0",
     "blockstack-signin-btn": "^1.0.3",
     "body-parser": "^1.18.2",
+    "chance": "^1.0.15",
     "lodash": "^4.17.10",
     "mysql": "^2.15.0",
     "mysql2": "^1.5.3",

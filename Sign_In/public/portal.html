@@ -68,6 +68,18 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
         <p>The Social Media Platform that allows you to control your data and who can see it :)</p>
       </div>
 
+			<div class="w3-card w3-round w3-white w3-center">
+			<div class="w3-container w3-padding">
+				<i class="fa fa-lock"> </i>
+			<h4> Secure Profile </h4>
+			<p> Allow Ember to Access SOME of Your Data to customize your experience </p>
+			<input type="text" class="sign-up-input" placeholder="Enter Email" autofocus>
+			<input type="password" class="sign-up-input" placeholder="Enter Password">
+			<input type="password" class="sign-up-input" placeholder="Confirm Password">
+			<button type="button" class="w3-button w3-theme" ><i class="fa fa-share-square" ></i> Submit </button>
+			</div>
+		</div>
+
     <!-- End Left Column -->
     </div>
 
@@ -76,15 +88,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
     <div class="w3-col m7">
 
 
-
-			<div id="welcomeDiv"  style="display:none;" class="answer_list" > WELCOME
-
-
-			</div> <!-- END OF SIGN UP FORM -->
-
       <div class="w3-row-padding">
+
+
+
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
+
+
+
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">What's On Your Mind?</h6>
               <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"></p>
@@ -97,36 +109,24 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
 		<p id="theStat"> <!-- the STATUSES -->
 
-			<div class="modal" id="modal">
-				 <div class="modal-content">
-						 <span class="close-button">&times;</span>
-						 <h1>Hello, I am a modal!</h1>
-				 </div>
-		 </div>
-
-
 		</p>
-
 
 
 
     <!-- End Middle Column -->
     </div>
 
-
-
     <!-- Right Column -->
     <div class="w3-col m2">
       <div class="w3-card w3-round w3-white w3-center">
         <div class="w3-container">
           <p> .. .. . . .</p>
-
           <p><strong> ...  </strong></p>
           <p> .. . . . .</p>
-          <p><input type="button" name="answer" value="Show Div" onclick="showDiv()"/></p>
         </div>
       </div>
       <br>
+
     <!-- End Right Column -->
     </div>
   <!-- End Grid -->
@@ -143,9 +143,7 @@ function profile(){
 	window.location = "profile.html";
 }
 
-function showDiv(){
-	$('#modal').show();
-}
+
 // Accordion
 function myFunction(id) {
     var x = document.getElementById(id);
