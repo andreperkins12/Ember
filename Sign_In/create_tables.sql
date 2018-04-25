@@ -4,6 +4,8 @@ create table UserBlockstackIDs
 		primary key,
 	BlockstackID varchar(255) not null,
 	cid int not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserBlockstackIDs_BlockstackID_uindex
 		unique (BlockstackID)
 )
@@ -22,7 +24,9 @@ create table UserContacts
 	Gender char null,
 	Birthday datetime null,
 	Hometown varchar(255) null,
-	Title varchar(255) null
+	Title varchar(255) null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW()
 )
 engine=InnoDB
 ;
@@ -38,6 +42,8 @@ create table UserEmails
 		primary key,
 	cid int not null,
 	Email varchar(255) not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserEmails_Email_uindex
 		unique (Email),
 	constraint UserEmails_UserContacts_cid_fk
@@ -56,6 +62,8 @@ create table UserFollowers
 		primary key,
 	cid int not null,
 	ProfileID int not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserFollowers_UserContacts_cid_fk
 		foreign key (cid) references UserContacts (cid),
 	constraint UserFollowers_UserContacts_cid_fk_2
@@ -79,6 +87,8 @@ create table UserImages
 	cid int not null,
 	pid int not null,
 	ResourceURI varchar(512) not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserImages_UserContacts_cid_fk
 		foreign key (cid) references UserContacts (cid)
 )
@@ -99,6 +109,8 @@ create table UserLoginTimes
 		primary key,
 	cid int not null,
 	Login datetime not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserLoginTimes_UserContacts_cid_fk
 		foreign key (cid) references UserContacts (cid)
 )
@@ -115,6 +127,8 @@ create table UserPosts
 		primary key,
 	cid int not null,
 	Content varchar(512) not null,
+	updated_at TIMESTAMP NOT NULL DEFAULT NOW() ON UPDATE NOW(),
+  created_at TIMESTAMP NOT NULL DEFAULT NOW(),
 	constraint UserPosts_UserContacts_cid_fk
 		foreign key (cid) references UserContacts (cid)
 )
