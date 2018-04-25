@@ -1,7 +1,7 @@
 {
-  "name": "hello-blockstack",
+  "name": "ember",
   "version": "0.0.0",
-  "description": "A simple Blockstack app",
+  "description": "A decentralized social media application using Blockstack",
   "main": "index.js",
   "scripts": {
     "browserify": "browserify requires.js -o public/bundle.js",

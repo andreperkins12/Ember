@@ -79,12 +79,12 @@ app.post('/api/v1/newuser', (req, res) => {
 // });
 
 app.get('/api/v1/bid',(req,res) => {
-  let id = req.query['blockstack_id'];
+  let id = req.query.blockstack_id;
   connection.query(
-    'SELECT cid FROM UserBlockstackID WHERE BlockstackID=?',
+    'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [id],
     (err, results) => {
-      console.log(results);
+      console.log(results[0].cid);
       res.status(200).send();
     });
 });
