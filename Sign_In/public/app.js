@@ -70,7 +70,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
     var home = "Compton";
     var person = "M";
-    var birth = 1921-06-21 00:00:00;
+    var birth = "1921-06-21 00:00:00";
 
 
 
