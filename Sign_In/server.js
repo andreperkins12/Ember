@@ -66,7 +66,7 @@ app.post('/api/v1/useremail', (req, res) => {
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
-      if (err) return res.status(400).send();
+      if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(
         'INSERT INTO UserEmails (cid,Email) VALUES (?,?)',
@@ -89,6 +89,7 @@ app.post('/api/v1/logintime', (req,res) => {
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
+      if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(
         'INSERT INTO UserLoginTimes (cid,Login) VALUES (?,?)',
@@ -112,11 +113,13 @@ app.post('/api/v1/follower', (req,res) => {
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
+      if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(
         'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
         [req.body.follower_id],
         (err, results) => {
+          if (err || !results) return res.status(400).send();
           let ProfileID = results[0].cid;
           connection.query(
             'INSERT INTO UserFollowers (cid,ProfileID) VALUES (?,?)',
@@ -140,6 +143,7 @@ app.post('/api/v1/textpost', (req,res) => {
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
+      if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(
         'INSERT INTO UserPosts (cid,Content) VALUES (?,?)',
@@ -163,6 +167,7 @@ app.post('/api/v1/imagepost', (req,res) => {
       'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
       [req.body.blockstack_id],
       (err, results) => {
+        if (err || !results) return res.status(400).send();
         let cid = results[0].cid;
         connection.query('INSERT INTO UserPosts (cid,Content) VALUES (?,?)', [cid,req.body.content], function (error, results, fields) {
           if (error) {
