@@ -17,18 +17,6 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
 </head>
 <body class="w3-theme-l5" onload="retreiveUserProfile()">
-	<div id='loader'>
-		<div class="spinner">
-  <span class="ball-1"></span>
-  <span class="ball-2"></span>
-  <span class="ball-3"></span>
-  <span class="ball-4"></span>
-  <span class="ball-5"></span>
-  <span class="ball-6"></span>
-  <span class="ball-7"></span>
-  <span class="ball-8"></span>
-</div>
-	</div>
 
 
 <!-- Navbar -->
@@ -62,11 +50,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
       <div class="w3-card w3-round w3-white">
         <div class="w3-container">
          <h4 class="w3-center" id="name-display"> </h4>
-         <p class="w3-center"><img  id="avatar-image" class="w3-center w3-circle" style="height:106px;width:106px"> </img> </p>
+         <p class="w3-center"  ><img  id="avatar-image" class="w3-center w3-circle" style="height:106px;width:106px"> </img> </p>
          <hr>
 
          <p> <i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme">  </i> </p>
-         <a><p onclick="signOut()"><i href="#" class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> Sign Out</p></a>
+         <a><p onclick="signOut()"><i class="fa fa-user fa-fw w3-margin-right w3-text-theme"></i> Sign Out</p></a>
         </div>
       </div>
       <br>
@@ -84,7 +72,15 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
     </div>
 
     <!-- Middle Column -->
+
     <div class="w3-col m7">
+
+
+
+			<div id="welcomeDiv"  style="display:none;" class="answer_list" > WELCOME
+
+
+			</div> <!-- END OF SIGN UP FORM -->
 
       <div class="w3-row-padding">
         <div class="w3-col m12">
@@ -93,18 +89,31 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
               <h6 class="w3-opacity">What's On Your Mind?</h6>
               <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"></p>
               <button type="button" class="w3-button w3-theme" onclick="saveNewStatus()"><i class="fa fa-pencil" ></i> Post</button>
-							<button  type="file" class="w3-button w3-theme"><i class="fa fa-photo" type="file"></i> Image/Video</button>
-
+							<button onclick="profile()" type="file" class="w3-button w3-theme"><i class="fa fa-photo" type="file"></i> Image/Video</button>
             </div>
           </div>
         </div>
       </div>
 
-		<p id="theStat">  </p>
+		<p id="theStat"> <!-- the STATUSES -->
+
+			<div class="modal" id="modal">
+				 <div class="modal-content">
+						 <span class="close-button">&times;</span>
+						 <h1>Hello, I am a modal!</h1>
+				 </div>
+		 </div>
+
+
+		</p>
+
+
 
 
     <!-- End Middle Column -->
     </div>
+
+
 
     <!-- Right Column -->
     <div class="w3-col m2">
@@ -114,23 +123,29 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
           <p><strong> ...  </strong></p>
           <p> .. . . . .</p>
-          <p><button class="w3-button w3-block w3-theme-l4"> Profile</button></p>
+          <p><input type="button" name="answer" value="Show Div" onclick="showDiv()"/></p>
         </div>
       </div>
       <br>
-
     <!-- End Right Column -->
     </div>
   <!-- End Grid -->
   </div>
+<!-- END Modal -->
 <!-- End Page Container -->
 </div>
 <br>
 
-
 <script>
 
 
+function profile(){
+	window.location = "profile.html";
+}
+
+function showDiv(){
+	$('#modal').show();
+}
 // Accordion
 function myFunction(id) {
     var x = document.getElementById(id);
@@ -158,4 +173,7 @@ function openNav() {
 
 
 </body>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
+
 </html>

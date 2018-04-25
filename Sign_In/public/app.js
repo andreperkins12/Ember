@@ -48,12 +48,12 @@ function signOut(){
 
 ///// ---------  PORTAL JS ------------- //////
 
-var statuses = new Array();
+var statuses = new Array(); //posts aka statuses
 const userData = blockstack.loadUserData(); //call returns blockstack credentials
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
-  fetchData();
+  fetchData(); //fetching data for refresh
   const user_Name = userData.profile.name; //User Blockstack name
   const user_blockID = userData.appPrivateKey; //Block ID
 
@@ -73,41 +73,82 @@ var statuses = [status_data],
 
 function fetchData(){
 
+/* ----- GIA HUB ---
   let options = {decrypt: true} //decrypt json file contents
 
-console.log("LOCAL STORAGE: "  + statuses);
 
   blockstack.getFile("s.json",options)
   .then((fileContents) => {
 
     //alert(JSON.parse(fileContents)|| "");
-
    var status_content = JSON.parse(fileContents);
 
     for (var i = 0; i < status_content.length; i++) {
       console.log(status_content);
     }
+  });
+
+    $.ajax({
+      type: "GET",
+      url:"/posts",
+      dataType: "html"
+      success: function (data) {
+             console.log("Success to fetch");
+       }
+    });
 
     var post_area = document.createElement('div');
     post_area.innerHTML =
     '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status_content.created_at + ' min</span> <h4>' + status_content.user + '</h4><br><hr class="w3-clear"><p>' + status_content.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
     document.getElementById('theStat').appendChild(post_area);
 
-  });
-}
 
-function handlenewStatusChange( ){
-  alert("YU");
-  this.setState({newStatus: event.target.value});
+*/
+
+
+
 }
 
 /* ////// SAVE NEW POSTS //////// */
 function saveNewStatus() {
 
   const the_post = document.getElementById('post_content');
+  const hours = new Date().getHours() - 12;
+  const minutes = new Date().getMinutes();
+  const seconds = new Date().getSeconds();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
 
+
+  var post = the_post.innerHTML ;
+
+  var data  = "user_key " + userData.appPrivateKey + " post_content: " + post + " timestamp: " +
+  hours + " " + minutes + " " +
+   seconds + "|" +  month + "/" + date + "/"+  year;
+
+  console.log(data);
+
+  $.ajax({
+    type: "POST",
+    url: "/userpost",
+    data: data,
+    success: function(data){
+      alert("success")
+      the_post.innerHTML = ' ';
+    }
+  })
+
+  var post_area = document.createElement('div');
+  post_area.innerHTML =
+  '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' +  hours + ":"+ new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+
+  the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
+  document.getElementById('theStat').appendChild(post_area);
+
+
+/* ------- GIA HUB
   let options = {encrypt: true};
-
 
   let posts = JSON.stringify({
     text: the_post.innerHTML,
@@ -130,16 +171,6 @@ blockstack.putFile("s.json",JSON.stringify(statuses),options)
     the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
     document.getElementById('theStat').appendChild(post_area);
   })
-}
-
-
-
-
-/*
-function componentWillMount(){
-  this.setState({
-    person: new Person(loadUserData().profile),
-    username: loadUserData.username
-  });
-}
 */
+
+}
