@@ -89,7 +89,10 @@ console.log(data);
     $.ajax({
           url: '/api/v1/usercontact',
           type: 'POST',
-          data: data,
+          data: JSON.stringify(data),
+          headers: {
+            "Content-Type": "application/json"
+          },
           success: function(result) {
               console.log("sent user data");
               console.log(result);
