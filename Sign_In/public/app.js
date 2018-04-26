@@ -56,7 +56,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
   const user_Name = userData.profile.name; //User Blockstack name
   const user_blockID = userData.appPrivateKey; //Block ID
   const user_Title = userData.profile.description;
-  const user_ID = userData.profile.username;
+  const user_ID = userData.username;
 
 
   fetchData(); //fetching data for refresh
@@ -68,6 +68,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
     console.log(userData);
     console.log("User Name\n " + user_Name +
     " Block ID: " + user_blockID + " " + userData.profile.account);
+    console.log("user_ID: "+user_ID);
 
     var home = "Compton";
     var person = "M";
@@ -76,7 +77,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
 
     var data = {
-      "blockstack_id" : user_blockID, //user private key
+      "blockstack_id" : user_ID, //user id
       "name" : user_Name, //users name
       "gender" : person,
       "birthday" : birth,
