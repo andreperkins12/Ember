@@ -63,7 +63,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
     document.getElementById('name-display').innerHTML = user_Name; //Display profile user name
     document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
-    document.getElementById('home-hub').innerHTML = "" + userData.profile.description; //Display user description
+    document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
 
     console.log(userData);
     console.log("User Name\n " + user_Name +
