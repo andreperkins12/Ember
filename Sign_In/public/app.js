@@ -48,15 +48,14 @@ function signOut(){
 
 ///// ---------  PORTAL JS ------------- //////
 var statuses = new Array(); //posts aka statuses
+const userData = blockstack.loadUserData(); //call returns blockstack credentials
+const user_Name = userData.profile.name; //User Blockstack name
+const user_blockID = userData.appPrivateKey; //Block ID
+const user_Title = userData.profile.description;
+const user_ID = userData.profile.username;
 
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
-
-  const userData = blockstack.loadUserData(); //call returns blockstack credentials
-  const user_Name = userData.profile.name; //User Blockstack name
-  const user_blockID = userData.appPrivateKey; //Block ID
-  const user_Title = userData.profile.description;
-  const user_ID = userData.profile.username;
 
 
   fetchData(); //fetching data for refresh
@@ -86,19 +85,22 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
 console.log(data);
 
-    $.ajax({
-          url: '/api/v1/usercontact',
-          type: 'POST',
-          data: data,
-          success: function(result) {
-              console.log("sent user data");
-              console.log(result);
-          },
-          error: function(e) {
-            console.log(e);
-            console.log(data);
-          }
-      });
+$.ajax({
+        url: '/api/v1/usercontact',
+        type: 'POST',
+        data: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        success: function(result) {
+            console.log("sent user data");
+            console.log(result);
+        },
+        error: function(e) {
+          console.log(e);
+          console.log(data);
+        }
+    });
 
 }
 
@@ -147,6 +149,80 @@ function fetchData(){
 }
 
 
+function secureUserProfile(){ ///USER EMAIL PUSH
+
+  const email = document.getElementById('email');
+  const pass = document.getElementById('user_pass').innerHTML;
+  const conf_pass = document.getElementById('conf_pass').innerHTML;
+
+
+  if (pass.value === conf_pass.value) {
+
+  var secure_user = {
+    "blockstack_id": userData.appPrivateKey,
+    "email":email
+  }
+
+  $.ajax({
+    type: 'POST',
+    url: "/api/v1/useremail",
+    data: JSON.stringify(secure_user),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    success: function(result) {
+        console.log("sent user data");
+        console.log(result);
+        pass.value,conf_pass.value, email.value = ' ';
+
+    },
+    error: function(e) {
+      console.log(e);
+      console.log(data);
+    }
+  });
+  }else {
+  window.alert("Passowords do not match");
+  }
+}
+
+
+
+
+function onFileSelected(event) {
+  var selectedFile = event.target.files[0];
+  var reader = new FileReader();
+
+  var imgtag = document.getElementById('imagearea');
+  imgtag.title = selectedFile.name;
+
+  reader.onload = function(event) {
+    imgtag.src = event.target.result;
+  };
+
+  reader.readAsDataURL(selectedFile);
+
+  console.log("DONE");
+}
+
+
+function onChooseFile(event, onLoadFileHandler) { //used to Read Contents of File
+
+    if (typeof window.FileReader !== 'function')
+        throw ("The file API isn't supported on this browser.");
+    let input = event.target;
+    if (!input)
+        throw ("The browser does not properly implement the event object");
+    if (!input.files)
+        throw ("This browser does not support the `files` property of the file input.");
+    if (!input.files[0])
+        return undefined;
+    let file = input.files[0];
+    let fr = new FileReader();
+    fr.onload = onLoadFileHandler;
+    fr.readAsText(file);
+}
+
 /* ////// SAVE NEW POSTS //////// */
 function saveNewStatus() {
 
@@ -154,9 +230,6 @@ function saveNewStatus() {
   const hours = new Date().getHours() - 12;
   const minutes = new Date().getMinutes();
   const seconds = new Date().getSeconds();
-  const date = new Date().getDate();
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth();
 
 
   var post = the_post.innerHTML;
@@ -171,19 +244,19 @@ function saveNewStatus() {
   $.ajax({
     type: 'POST',
     url: "/api/v1/textpost",
-    data: data,
-    dataType: 'json',
-    success: function(data){
-      alert("success")
-      the_post.innerHTML = ' ';
+    data: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    success: function(result) {
+        console.log("sent user data");
+        console.log(result);
     },
     error: function(e) {
-      console.log("ERROR");
       console.log(e);
+      console.log(data);
     }
 });
-
-
 
   var post_area = document.createElement('div');
   post_area.innerHTML =
