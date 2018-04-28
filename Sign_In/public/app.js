@@ -52,6 +52,9 @@ const userData = blockstack.loadUserData(); //call returns blockstack credential
 const user_Name = userData.profile.name; //User Blockstack name
 const user_Title = userData.profile.description;
 const user_ID = userData.username;
+var counter = localStorage.getItem("logged");
+
+
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
@@ -70,6 +73,11 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
     var person = "M";
     var birth = "1921-06-21 00:00:00";
 
+    counter++;
+    localStorage.setItem("logged", counter);
+
+
+
 
 
     var data = {
@@ -82,6 +90,9 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
     };
 
 console.log(data);
+
+
+if (counter === 1) {
 
 $.ajax({
         url: '/api/v1/usercontact',
@@ -100,7 +111,12 @@ $.ajax({
         }
     });
 
+} else {
+  console.log("already added user");
 }
+
+}
+
 
 var status_data = localStorage.getItem('posts') || "";
 var statuses = [status_data],
@@ -109,6 +125,24 @@ var statuses = [status_data],
 
 
 function fetchData(){
+
+  var posts;
+
+  $.ajax({
+    type: "GET",
+    url:"/api/v1/allposts",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    success: function(data) {
+      console.log("received data");
+      addToFeed(data);
+    },
+    error: function(e) {
+      console.log(e);
+      console.log(data);
+    }
+  });
 
 /* ----- GIA HUB ---
   let options = {decrypt: true} //decrypt json file contents
@@ -124,26 +158,21 @@ function fetchData(){
       console.log(status_content);
     }
   });
+*/
+}
 
-    $.ajax({
-      type: "GET",
-      url:"/posts",
-      dataType: "html"
-      success: function (data) {
-             console.log("Success to fetch");
-       }
-    });
 
+function addToFeed(data){
+
+
+  for (var i = 0; i < data.posts.length; i++) {
+
+    console.log(data);
     var post_area = document.createElement('div');
     post_area.innerHTML =
-    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + status_content.created_at + ' min</span> <h4>' + status_content.user + '</h4><br><hr class="w3-clear"><p>' + status_content.text + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity"> min</span> <h4>' + data.posts[i].Name + '</h4><br><hr class="w3-clear"><p>' + data.posts[i].Content + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
     document.getElementById('theStat').appendChild(post_area);
-
-
-*/
-
-
-
+  }
 }
 
 
@@ -172,7 +201,6 @@ function secureUserProfile(){ ///USER EMAIL PUSH
         console.log("sent user data");
         console.log(result);
         pass.value,conf_pass.value, email.value = ' ';
-
     },
     error: function(e) {
       console.log(e);
@@ -180,12 +208,12 @@ function secureUserProfile(){ ///USER EMAIL PUSH
     }
   });
   }else {
-  window.alert("Passowords do not match");
+  alert("Passowords do not match");
   }
 }
 
 
-function loadProfile(){
+function loadProfile(){ //Loading User Profile on Profile.html
 
   document.getElementById('avatar_profile').src = userData.profile.image[0].contentUrl;
   document.getElementById('profile_name').innerHTML = user_Name;
@@ -195,41 +223,21 @@ function loadProfile(){
 
 
 }
-
+var user_image;
 function onFileSelected(event) {
+
   var selectedFile = event.target.files[0];
   var reader = new FileReader();
-
   var imgtag = document.getElementById('imagearea');
-  imgtag.title = selectedFile.name;
 
-  reader.onload = function(event) {
-    imgtag.src = event.target.result;
-  };
 
+
+
+  user_image =  event.target.result;;
   var the_image = reader.readAsDataURL(selectedFile);
-
-
-  console.log("DONE");
+console.log(user_image);
 }
 
-
-function onChooseFile(event, onLoadFileHandler) { //used to Read Contents of File
-
-    if (typeof window.FileReader !== 'function')
-        throw ("The file API isn't supported on this browser.");
-    let input = event.target;
-    if (!input)
-        throw ("The browser does not properly implement the event object");
-    if (!input.files)
-        throw ("This browser does not support the `files` property of the file input.");
-    if (!input.files[0])
-        return undefined;
-    let file = input.files[0];
-    let fr = new FileReader();
-    fr.onload = onLoadFileHandler;
-    fr.readAsText(file);
-}
 
 /* ////// SAVE NEW POSTS //////// */
 function saveNewStatus(image) {
@@ -272,9 +280,10 @@ function saveNewStatus(image) {
 
 
 
+
   var post_area = document.createElement('div');
   post_area.innerHTML =
-  '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' +  hours + ":"+ new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br><img src = ' + 'id="imagearea" height="25%" width="25%"> <br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+  '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br><img id="imagearea" src=" ' + user_image + '" height="50"> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' +  hours + ":"+ new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br><img src = ' + 'id="imagearea" height="25%" width="25%"> <br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
 
   the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
 

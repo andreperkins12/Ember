@@ -223,7 +223,7 @@ app.get('/api/v1/posts', (req,res) => {
 
 app.get('/api/v1/allposts', (req,res) => {
   connection.query(
-    'SELECT Content,ResourceURI,Name ' +
+    'SELECT Content,ResourceURI,Name,created_at' +
     'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
     'JOIN UserContacts uc ON up.cid=uc.cid',
     (err, results) => {
@@ -235,7 +235,7 @@ app.get('/api/v1/allposts', (req,res) => {
 
 app.get('/api/v1/allposts', (req,res) => {
   connection.query(
-    'SELECT Content,ResourceURI,Name ' +
+    'SELECT Content,ResourceURI,Name,created_at' +
     'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
     'JOIN UserContacts uc ON up.cid=uc.cid',
     (err, results) => {
