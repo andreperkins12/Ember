@@ -251,20 +251,14 @@ app.get('/api/v1/feed', (req,res) => {
       if (err) return res.status(400).send(err);
       let cid = results[0].cid;
       connection.query(
-        'SELECT Content,ResourceURI,Name ' +
-        'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
-        'JOIN UserContacts uc ON up.cid=uc.cid ' +
-        'WHERE up.cid=?',
+        'SELECT uc.Name,up.Content,ui.ResourceURI FROM ' +
+        'UserFollowers uf JOIN ((UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
+        'JOIN UserContacts uc ON up.cid=uc.cid) ON uf.ProfileID=up.cid',
         [cid],
         (err, results) => {
           if (err) return res.status(400).send(err);
-          console.log(JSON.stringify(results));
-          res.status(200).send(JSON.stringify(results));
+          res.status(200).send({"posts":results});
         }
       );
     });
 });
-
-SELECT uc.Name,up.Content,ui.ResourceURI FROM
-UserFollowers uf JOIN ((UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid)
-JOIN UserContacts uc ON up.cid=uc.cid) ON uf.ProfileID=up.cid;
