@@ -50,10 +50,8 @@ function signOut(){
 var statuses = new Array(); //posts aka statuses
 const userData = blockstack.loadUserData(); //call returns blockstack credentials
 const user_Name = userData.profile.name; //User Blockstack name
-const user_blockID = userData.appPrivateKey; //Block ID
 const user_Title = userData.profile.description;
-const user_ID = userData.profile.username;
-
+const user_ID = userData.username;
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
@@ -62,11 +60,11 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
     document.getElementById('name-display').innerHTML = user_Name; //Display profile user name
     document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
-    document.getElementById('home-hub').innerHTML = "" + userData.profile.description; //Display user description
+    document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
 
     console.log(userData);
-    console.log("User Name\n " + user_Name +
-    " Block ID: " + user_blockID + " " + userData.profile.account);
+    console.log("User Name\n " + user_Name + " " + userData.profile.account);
+    console.log("user_ID: "+user_ID);
 
     var home = "Compton";
     var person = "M";
@@ -75,7 +73,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
 
     var data = {
-      "blockstack_id" : user_blockID, //user private key
+      "blockstack_id" : user_ID, //user id
       "name" : user_Name, //users name
       "gender" : person,
       "birthday" : birth,
@@ -159,7 +157,7 @@ function secureUserProfile(){ ///USER EMAIL PUSH
   if (pass.value === conf_pass.value) {
 
   var secure_user = {
-    "blockstack_id": userData.appPrivateKey,
+    "blockstack_id": user_ID,
     "email":email
   }
 
@@ -240,13 +238,16 @@ function saveNewStatus(image) {
   const hours = new Date().getHours() - 12;
   const minutes = new Date().getMinutes();
   const seconds = new Date().getSeconds();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
 
 
   var post = the_post.innerHTML;
 
-  console.log(userData.appPrivateKey);
+  console.log(user_ID);
 
-  var data  = {"blockstack_id":userData.appPrivateKey,"content":post};
+  var data  = {"blockstack_id":user_ID,"content":post};
 
 
   console.log(data);
@@ -263,10 +264,13 @@ function saveNewStatus(image) {
         console.log(result);
     },
     error: function(e) {
+      console.log("ERROR");
       console.log(e);
       console.log(data);
     }
 });
+
+
 
   var post_area = document.createElement('div');
   post_area.innerHTML =

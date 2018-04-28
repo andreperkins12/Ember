@@ -139,10 +139,12 @@ user: blockstackID,
 content: content
  */
 app.post('/api/v1/textpost', (req,res) => {
+  console.log(req.body.blockstack_id);
   connection.query(
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
+      console.log(results);
       if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(
@@ -195,4 +197,70 @@ app.post('/api/v1/imagepost', (req,res) => {
         });
       });
   });
+});
+
+app.get('/api/v1/posts', (req,res) => {
+  connection.query(
+    'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
+    [req.query.blockstack_id],
+    (err, results) => {
+      if (err) return res.status(400).send(err);
+      let cid = results[0].cid;
+      connection.query(
+        'SELECT Content,ResourceURI,Name ' +
+        'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
+        'JOIN UserContacts uc ON up.cid=uc.cid ' +
+        'WHERE up.cid=?',
+        [cid],
+        (err, results) => {
+          if (err) return res.status(400).send(err);
+          console.log(JSON.stringify(results));
+          res.status(200).send(JSON.stringify(results));
+        }
+      );
+    });
+});
+
+app.get('/api/v1/allposts', (req,res) => {
+  connection.query(
+    'SELECT Content,ResourceURI,Name ' +
+    'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
+    'JOIN UserContacts uc ON up.cid=uc.cid',
+    (err, results) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).send({"posts":results});
+    }
+  );
+});
+
+app.get('/api/v1/allposts', (req,res) => {
+  connection.query(
+    'SELECT Content,ResourceURI,Name ' +
+    'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
+    'JOIN UserContacts uc ON up.cid=uc.cid',
+    (err, results) => {
+      if (err) return res.status(400).send(err);
+      res.status(200).send({"posts":results});
+    }
+  );
+});
+
+app.get('/api/v1/feed', (req,res) => {
+  connection.query(
+    'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
+    [req.query.blockstack_id],
+    (err, results) => {
+      if (err) return res.status(400).send(err);
+      let cid = results[0].cid;
+      connection.query(
+        'SELECT uc.Name,up.Content,ui.ResourceURI FROM ' +
+        'UserFollowers uf JOIN ((UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
+        'JOIN UserContacts uc ON up.cid=uc.cid) ON uf.ProfileID=up.cid',
+        [cid],
+        (err, results) => {
+          if (err) return res.status(400).send(err);
+          res.status(200).send({"posts":results});
+        }
+      );
+    });
 });
