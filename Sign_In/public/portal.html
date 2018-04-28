@@ -24,11 +24,12 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
  <div class="w3-bar w3-theme-d2 w3-left-align w3-large">
   <a class="w3-bar-item w3-button w3-hide-medium w3-hide-large w3-right w3-padding-large w3-hover-white w3-large w3-theme-d2" href="javascript:void(0);" onclick="openNav()"><i class="fa fa-bars"></i></a>
   <a href="#" class="w3-bar-item w3-button w3-padding-large w3-theme-d4"><i class="fa fa-home w3-margin-right"></i></a>
+	<!--
   <a href="#" class="w3-bar-item w3-button w3-hide-small w3-padding-large w3-hover-white" title="News"><i class="fa fa-globe"></i></a>
   <div class="w3-dropdown-hover w3-hide-small">
     <button class="w3-button w3-padding-large" title="Notifications"><i class="fa fa-bell"></i><span class="w3-badge w3-right w3-small w3-green">3</span></button>
-  </div>
-  <a href="#" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
+  </div> -->
+  <a href="profile.html" class="w3-bar-item w3-button w3-hide-small w3-right w3-padding-large w3-hover-white" title="My Account">
   <i class="fa fa-user"></i>
   </a>
  </div>
@@ -38,6 +39,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 <div id="navDemo" class="w3-bar-block w3-theme-d2 w3-hide w3-hide-large w3-hide-medium w3-large">
   <a href="#" class="w3-bar-item w3-button w3-padding-large">Link 1</a>
 
+  <a href="profile.html" class="w3-bar-item w3-button w3-padding-large">Profile</a>
   <a href="#"  onclick="signOut()"class="w3-bar-item w3-button w3-padding-large">Sign Out</a>
 </div>
 <!-- Page Container -->
@@ -73,10 +75,10 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 				<i class="fa fa-lock"> </i>
 			<h4> Secure Profile </h4>
 			<p> Allow Ember to Access SOME of Your Data to customize your experience </p>
-			<input type="text" class="sign-up-input" placeholder="Enter Email" autofocus>
-			<input type="password" class="sign-up-input" placeholder="Enter Password">
-			<input type="password" class="sign-up-input" placeholder="Confirm Password">
-			<button type="button" class="w3-button w3-theme" ><i class="fa fa-share-square" ></i> Submit </button>
+			<input id="email" type="text" class="sign-up-input" placeholder="Enter Email" autofocus>
+			<input id="user_pass"type="password" class="sign-up-input" placeholder="Enter Password">
+			<input id="conf_pass" type="password" class="sign-up-input" placeholder="Confirm Password">
+			<button onclick="secureUserProfile()" type="button" class="w3-button w3-theme" ><i class="fa fa-share-square" ></i> Submit </button>
 			</div>
 		</div>
 
@@ -90,18 +92,17 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 
       <div class="w3-row-padding">
 
-
-
         <div class="w3-col m12">
           <div class="w3-card w3-round w3-white">
-
-
-
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">What's On Your Mind?</h6>
-              <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"></p>
+              <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"><img id="imagearea" height="50"></p>
+
               <button type="button" class="w3-button w3-theme" onclick="saveNewStatus()"><i class="fa fa-pencil" ></i> Post</button>
-							<button onclick="profile()" type="file" class="w3-button w3-theme"><i class="fa fa-photo" type="file"></i> Image/Video</button>
+
+							<input value = "upload" class="w3-button w3-theme" id="fileUpload" multiple="false" name="files[]" type="file" onchange="onFileSelected(event)">
+						</input>
+
             </div>
           </div>
         </div>
@@ -137,6 +138,7 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
 <br>
 
 <script>
+
 
 
 function profile(){
