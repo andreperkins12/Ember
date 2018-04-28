@@ -139,10 +139,12 @@ user: blockstackID,
 content: content
  */
 app.post('/api/v1/textpost', (req,res) => {
+  console.log(req.body.blockstack_id);
   connection.query(
     'SELECT cid FROM UserBlockstackIDs WHERE BlockstackID=?',
     [req.body.blockstack_id],
     (err, results) => {
+      console.log(results);
       if (err || !results) return res.status(400).send();
       let cid = results[0].cid;
       connection.query(

@@ -51,8 +51,7 @@ var statuses = new Array(); //posts aka statuses
 const userData = blockstack.loadUserData(); //call returns blockstack credentials
 const user_Name = userData.profile.name; //User Blockstack name
 const user_Title = userData.profile.description;
-const user_ID = userData.profile.username;
-
+const user_ID = userData.username;
 
 function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
@@ -64,8 +63,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
     document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
 
     console.log(userData);
-    console.log("User Name\n " + user_Name +
-    " Block ID: " + user_blockID + " " + userData.profile.account);
+    console.log("User Name\n " + user_Name + " " + userData.profile.account);
     console.log("user_ID: "+user_ID);
 
     var home = "Compton";
