@@ -67,6 +67,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
     console.log(userData);
     console.log("User Name\n " + user_Name +
     " Block ID: " + user_blockID + " " + userData.profile.account);
+    console.log("user_ID: "+user_ID);
 
     var home = "Compton";
     var person = "M";
@@ -75,7 +76,7 @@ function retreiveUserProfile(){ //Retreive user Blockstack profile data
 
 
     var data = {
-      "blockstack_id" : user_blockID, //user private key
+      "blockstack_id" : user_ID, //user id
       "name" : user_Name, //users name
       "gender" : person,
       "birthday" : birth,
@@ -230,6 +231,9 @@ function saveNewStatus() {
   const hours = new Date().getHours() - 12;
   const minutes = new Date().getMinutes();
   const seconds = new Date().getSeconds();
+  const date = new Date().getDate();
+  const year = new Date().getFullYear();
+  const month = new Date().getMonth();
 
 
   var post = the_post.innerHTML;
@@ -253,10 +257,13 @@ function saveNewStatus() {
         console.log(result);
     },
     error: function(e) {
+      console.log("ERROR");
       console.log(e);
       console.log(data);
     }
 });
+
+
 
   var post_area = document.createElement('div');
   post_area.innerHTML =
