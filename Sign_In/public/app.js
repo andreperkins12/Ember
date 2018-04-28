@@ -187,7 +187,16 @@ function secureUserProfile(){ ///USER EMAIL PUSH
 }
 
 
+function loadProfile(){
 
+  document.getElementById('avatar_profile').src = userData.profile.image[0].contentUrl;
+  document.getElementById('profile_name').innerHTML = user_Name;
+  document.getElementById('prof_desc').innerHTML = userData.profile.description;
+
+  ///LOAD USER POSTS function call here
+
+
+}
 
 function onFileSelected(event) {
   var selectedFile = event.target.files[0];
@@ -200,7 +209,8 @@ function onFileSelected(event) {
     imgtag.src = event.target.result;
   };
 
-  reader.readAsDataURL(selectedFile);
+  var the_image = reader.readAsDataURL(selectedFile);
+
 
   console.log("DONE");
 }
@@ -224,7 +234,7 @@ function onChooseFile(event, onLoadFileHandler) { //used to Read Contents of Fil
 }
 
 /* ////// SAVE NEW POSTS //////// */
-function saveNewStatus() {
+function saveNewStatus(image) {
 
   const the_post = document.getElementById('post_content');
   const hours = new Date().getHours() - 12;
@@ -260,9 +270,10 @@ function saveNewStatus() {
 
   var post_area = document.createElement('div');
   post_area.innerHTML =
-  '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' +  hours + ":"+ new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
+  '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' +  hours + ":"+ new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br><img src = ' + 'id="imagearea" height="25%" width="25%"> <br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
 
   the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
+
   document.getElementById('theStat').appendChild(post_area);
 
 

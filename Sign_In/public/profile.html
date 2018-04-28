@@ -6,7 +6,7 @@
   <script src="app.js"></script>
   <link rel="stylesheet" href="css/profile.css">
 </head>
-<body>
+<body onload="loadProfile()">
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 
@@ -19,12 +19,12 @@
                 <div class="user">
                   <div class="media">
                     <div class="media-left">
-                      <img src="http://rootstix.com/wp/wp-content/uploads/2015/01/ROOTSTIX-Take-Part-Blog_Face-Shape-Hairstyles-for-Men-80x80.png" class="media-object face" style="width: 82px">
+                      <img id="avatar_profile" class="media-object face" style="width: 82px">
                       <span class="idle"></span>
                     </div>
                     <div class="media-body">
-                      <h4 class="media-heading">swag </h4>
-                      <p>other swag</p>
+                      <h4 id="profile_name" class="media-heading"> </h4>
+                      <p id="prof_desc"> </p>
                     </div>
                 </div>
                 </div>
