@@ -50,7 +50,6 @@ function signOut(){
 var statuses = new Array(); //posts aka statuses
 const userData = blockstack.loadUserData(); //call returns blockstack credentials
 const user_Name = userData.profile.name; //User Blockstack name
-const user_blockID = userData.appPrivateKey; //Block ID
 const user_Title = userData.profile.description;
 const user_ID = userData.profile.username;
 
@@ -160,7 +159,7 @@ function secureUserProfile(){ ///USER EMAIL PUSH
   if (pass.value === conf_pass.value) {
 
   var secure_user = {
-    "blockstack_id": userData.appPrivateKey,
+    "blockstack_id": user_ID,
     "email":email
   }
 
@@ -238,9 +237,9 @@ function saveNewStatus() {
 
   var post = the_post.innerHTML;
 
-  console.log(userData.appPrivateKey);
+  console.log(user_ID);
 
-  var data  = {"blockstack_id":userData.appPrivateKey,"content":post};
+  var data  = {"blockstack_id":user_ID,"content":post};
 
 
   console.log(data);
