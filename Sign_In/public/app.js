@@ -101,6 +101,7 @@ $.ajax({
         headers: {
           "Content-Type": "application/json"
         },
+        cache: true,
         success: function(result) {
             console.log("sent user data");
             console.log(result);
@@ -134,6 +135,7 @@ function fetchData(){
     headers: {
       "Content-Type": "application/json"
     },
+    cache: true,
     success: function(data) {
       console.log("received data");
       addToFeed(data);
@@ -164,9 +166,7 @@ function fetchData(){
 
 function addToFeed(data){
 
-
   for (var i = 0; i < data.posts.length; i++) {
-
     console.log(data);
     var post_area = document.createElement('div');
     post_area.innerHTML =
@@ -267,6 +267,7 @@ function saveNewStatus(image) {
     headers: {
       "Content-Type": "application/json"
     },
+    cache: true,
     success: function(result) {
         console.log("sent user data");
         console.log(result);
