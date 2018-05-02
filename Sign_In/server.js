@@ -233,17 +233,6 @@ app.get('/api/v1/allposts', (req,res) => {
   );
 });
 
-app.get('/api/v1/allposts', (req,res) => {
-  connection.query(
-    'SELECT Content,ResourceURI,Name ' +
-    'FROM (UserPosts up LEFT JOIN UserImages ui ON up.id = ui.pid) ' +
-    'JOIN UserContacts uc ON up.cid=uc.cid',
-    (err, results) => {
-      if (err) return res.status(400).send(err);
-      res.status(200).send({"posts":results});
-    }
-  );
-});
 
 app.get('/api/v1/feed', (req,res) => {
   connection.query(

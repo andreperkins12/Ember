@@ -96,13 +96,11 @@ html,body,h1,h2,h3,h4,h5 {font-family: 'Quicksand', sans-serif;}
           <div class="w3-card w3-round w3-white">
             <div class="w3-container w3-padding">
               <h6 class="w3-opacity">What's On Your Mind?</h6>
-              <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"><img id="imagearea" height="50"></p>
+              <p id="post_content" contenteditable="true" class="w3-border w3-padding" onchange="handlenewStatusChange()"></p>
 
               <button type="button" class="w3-button w3-theme" onclick="saveNewStatus()"><i class="fa fa-pencil" ></i> Post</button>
 
-							<input value = "upload" class="w3-button w3-theme" id="fileUpload" multiple="false" name="files[]" type="file" onchange="onFileSelected(event)">
-						</input>
-
+							<input value ="upload" title=" " class="w3-button w3-theme" id="fileUpload" multiple="false" name="files[]" type="file" onchange="onFileSelected(event)"/>
             </div>
           </div>
         </div>
