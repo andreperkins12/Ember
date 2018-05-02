@@ -4,6 +4,7 @@
   <title>Ember</title>
   <script src="bundle.js"></script>
   <script src="app.js"></script>
+    <script src="js/profile.js"></script>
   <link rel="stylesheet" href="css/profile.css">
 </head>
 <body onload="loadProfile()">
@@ -28,8 +29,9 @@
                     </div>
                 </div>
                 </div>
-                <div class="friends">
+                <div class="friends" style="overflow-y: scroll; display:relative;">
                   <h3><span>POSTS go here <span></h3>
+                    <div class="posts"/>
                 </div>
               </div>
               <div class="menu-box">
@@ -54,4 +56,6 @@ function back(){
   window.location = "portal.html";
 }
 </script>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.0/jquery.min.js"></script>
 </html>
