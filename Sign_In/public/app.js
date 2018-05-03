@@ -32,6 +32,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     showProfile(profile)
     block_btn.style.display === 'hidden';
     window.location.href = 'portal.html';
+    userLogin();
 
   } else if (blockstack.isSignInPending()) {
     blockstack.handlePendingSignIn().then(function(userData) {
@@ -52,12 +53,13 @@ var statuses = new Array(); //posts aka statuses
 const userData = blockstack.loadUserData(); //call returns blockstack credentials
 const user_Name = userData.profile.name; //User Blockstack name
 const user_Title = userData.profile.description;
-const user_ID = userData.username;
+const user_ID = userData.appPrivateKey;
 var counter = localStorage.getItem("logged");
 
 
 
 function retreiveUserProfile() { //Retreive user Blockstack profile data
+
 
 
   fetchData(); //fetching data for refresh
@@ -67,6 +69,7 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
   document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
 
   console.log(userData);
+  console.log(userData.appPrivateKey);
   console.log("User Name\n " + user_Name + " " + userData.profile.account);
   console.log("user_ID: " + user_ID);
 
@@ -88,6 +91,7 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
 
   if (counter === 1) {
 
+
     $.ajax({
       url: '/api/v1/usercontact',
       type: 'POST',
@@ -105,9 +109,8 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
         console.log(data);
       }
     });
-
   } else {
-    console.log("already added user");
+    console.log("REGISTERED USER");
   }
 
 }
@@ -117,6 +120,58 @@ var status_data = localStorage.getItem('posts') || "";
 var statuses = [status_data],
   data;
 
+function AddZero(num) {
+  return (num >= 0 && num < 10) ? "0" + num : num + "";
+}
+
+
+function userLogin() { /// LOGIN IN TIME
+
+  var now = new Date();
+  year = "" + now.getFullYear();
+  month = "" + (now.getMonth() + 1);
+  if (month.length == 1) {
+    month = "0" + month;
+  }
+  day = "" + now.getDate();
+  if (day.length == 1) {
+    day = "0" + day;
+  }
+  hour = "" + now.getHours();
+  if (hour.length == 1) {
+    hour = "0" + hour;
+  }
+  minute = "" + now.getMinutes();
+  if (minute.length == 1) {
+    minute = "0" + minute;
+  }
+  second = "" + now.getSeconds();
+  if (second.length == 1) {
+    second = "0" + second;
+  }
+  var full_date = year + "-" + month + "-" + day + " " + hour + ":" + minute + ":" + second;
+
+  var login = {
+    "blockstack_id": user_ID,
+    "login_time": full_date
+  }
+
+  $.ajax({
+    url: '/api/v1/logintime',
+    type: 'POST',
+    data: JSON.stringify(login),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    success: function(result) {
+      console.log("sent user data");
+      console.log(result);
+    },
+    error: function(e) {
+      console.log(e);
+    }
+  });
+}
 
 
 function fetchData() {
@@ -132,6 +187,7 @@ function fetchData() {
     cache: true,
     success: function(data) {
       console.log("received data");
+      console.log(data);
       addToFeed(data);
     },
     error: function(e) {
@@ -159,8 +215,7 @@ function fetchData() {
 
 
 function addToFeed(data) {
-
-  for (var i = 0; i < data.posts.length; i++) {
+  for (var i = data.posts.length - 1; i >= 0; i--) {
     console.log(data);
     var post_area = document.createElement('div');
     post_area.innerHTML =
@@ -172,66 +227,66 @@ function addToFeed(data) {
 
 function secureUserProfile() { ///USER EMAIL PUSH
 
-  const email = document.getElementById('email');
+  const email = document.querySelector('input[name="email"]');
   const pass = document.getElementById('user_pass').innerHTML;
   const conf_pass = document.getElementById('conf_pass').innerHTML;
+  const user_email = email.value;
 
+  var data = {
+    "blockstack_id": user_ID,
+    "email": user_email
+  };
 
-  if (pass.value === conf_pass.value) {
-
-    var secure_user = {
-      "cid": user_ID,
-      "Email": email
+  $.ajax({
+    url: '/api/v1/useremail',
+    type: 'POST',
+    data: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    cache: true,
+    success: function(result) {
+      console.log("sent user data");
+      email.value = ' ';
+      pass.value = " ";
+    },
+    error: function(e) {
+      console.log(e);
+      console.log(data);
     }
-
-    $.ajax({
-      type: 'POST',
-      url: "/api/v1/useremail",
-      headers: {
-        "Content-Type": "application/json"
-      },
-      success: function(result) {
-        console.log("sent user data");
-        console.log(result);
-        pass.value, conf_pass.value, email.value = ' ';
-      },
-      error: function(e) {
-        console.log(e);
-        console.log(data);
-      }
-    });
-  } else {
-    alert("Passowords do not match");
-  }
+  });
 }
-
-
-function addUserFeed(data) {
-
-console.log(data);
-}
-
 
 
 var user_image;
+var image_selected = false;
+
 
 function onFileSelected(event) {
+
 
   var selectedFile = event.target.files[0];
   var reader = new FileReader();
   var imgtag = document.getElementById('imagearea');
 
-
-
-
   user_image = event.target.result;;
   var the_image = reader.readAsDataURL(selectedFile);
-  console.log(user_image);
+  image_selected = true;
+  image_post(image_selected);
+
 }
 
 
+function image_post(image_selected) {
+  if (image_selected === true) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
 /* ////// SAVE NEW POSTS //////// */
-function saveNewStatus(image) {
+function saveNewStatus() {
 
   const the_post = document.getElementById('post_content');
   const hours = new Date().getHours() - 12;
@@ -254,36 +309,61 @@ function saveNewStatus(image) {
 
   console.log(data);
 
-  $.ajax({
-    type: 'POST',
-    url: "/api/v1/textpost",
-    data: JSON.stringify(data),
-    headers: {
-      "Content-Type": "application/json"
-    },
-    cache: true,
-    success: function(result) {
-      console.log("sent user data");
-      console.log(result);
-    },
-    error: function(e) {
-      console.log("ERROR");
-      console.log(e);
-      console.log(data);
-    }
-  });
 
+    if(image_selected === false){
 
+alert("TEXTPOST");
+    $.ajax({
+        type: 'POST',
+        url: "/api/v1/textpost",
+        data: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        cache: true,
+        success: function(result) {
+          console.log("sent user data");
+          console.log(result);
+        },
+        error: function(e) {
+          console.log("ERROR");
+          console.log(e);
+          console.log(data);
+        }
+    });
+  }else {
 
+    alert("IMAGEPOST" + user_image);
+
+    /*
+    $.ajax({
+        type: 'POST',
+        url: "/api/v1/imagepost",
+        data: JSON.stringify(data),
+        headers: {
+          "Content-Type": "application/json"
+        },
+        cache: true,
+        success: function(result) {
+          console.log("sent user data");
+          console.log(result);
+        },
+        error: function(e) {
+          console.log("ERROR");
+          console.log(e);
+          console.log(data);
+        }
+    });
+
+    */
+
+  }
 
   var post_area = document.createElement('div');
   post_area.innerHTML =
-    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br><img id="imagearea" src=" ' + user_image + '" height="50"> <span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + hours + ":" + new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br><img src = ' + 'id="imagearea" height="25%" width="25%"> <br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
-
+    '<div className="status" key={status.id} class="w3-container w3-card w3-white w3-round w3-margin"><br><span class="w3-right w3-opacity"></span> <span class="w3-right w3-opacity">' + hours + ":" + new Date().getMinutes() + ' PM </span> <h4>' + userData.profile.name + '</h4><br><hr class="w3-clear"><p>' + post + '</p><br> <br> <button type="button" class="w3-button w3-theme-d1 w3-margin-bottom"><i class="fa fa-thumbs-up"></i> Like</button> <button type="button" class="w3-button w3-theme-d2 w3-margin-bottom"><i class="fa fa-comment"></i> Comment</button></div>'
   the_post.innerHTML = ' '; //CLEAR INPUT FROM POSTS
-
-  document.getElementById('theStat').appendChild(post_area);
-
+  document.getElementById('theStat').insertBefore(post_area, document.getElementById('theStat').firstChild);
 
   /* ------- GIA HUB
     let options = {encrypt: true};

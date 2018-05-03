@@ -21,7 +21,6 @@ function loadPosts(){
     headers: {
       "Content-Type": "application/json"
     },
-    cache: true,
     success: function(data) {
       console.log("received data");
       addUserFeed(data);
