@@ -17,7 +17,7 @@ public class Prompts {
         System.out.print("Welcome to Ember Admin!!! ....\n");
         System.out.print("\n------ Admin Selection --------\n");
         try {
-            System.out.print("1. Aggregation/Group By\n2. SubQuery\n3. Generate Report\n4. Admin Dashboard");
+            System.out.print("1. Group By\n2. Generate Report\n");
             choice = Integer.parseInt(br.readLine());
             core.adminChoice(choice);
         }catch (IOException e){e.getMessage();}

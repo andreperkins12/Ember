@@ -3,8 +3,6 @@ function loadProfile() { //Loading User Profile on Profile.html
   ///LOAD USER POSTS function call here
   loadPosts();
   getUserInfo();
-
-
 }
 
 function getUserInfo(){
@@ -16,8 +14,8 @@ function getUserInfo(){
 function loadPosts(){
 
   $.ajax({
-    type: "GET",
-    url: "/api/v1/posts",
+    type: 'GET',
+    url: '/api/v1/posts',
     headers: {
       "Content-Type": "application/json"
     },

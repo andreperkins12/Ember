@@ -60,18 +60,10 @@ var counter = localStorage.getItem("logged");
 
 function retreiveUserProfile() { //Retreive user Blockstack profile data
 
-
-
   fetchData(); //fetching data for refresh
-
   document.getElementById('name-display').innerHTML = user_Name; //Display profile user name
   document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
   document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
-
-  console.log(userData);
-  console.log(userData.appPrivateKey);
-  console.log("User Name\n " + user_Name + " " + userData.profile.account);
-  console.log("user_ID: " + user_ID);
 
   var home = "Compton";
   var person = "M";
@@ -90,7 +82,6 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
   };
 
   if (counter === 1) {
-
 
     $.ajax({
       url: '/api/v1/usercontact',
@@ -189,7 +180,7 @@ function fetchData() {
       console.log("received data");
       console.log(data);
       addToFeed(data);
-    },
+    },timeout: 1000000000,
     error: function(e) {
       console.log(e);
       console.log(data);
@@ -269,8 +260,11 @@ function onFileSelected(event) {
   var reader = new FileReader();
   var imgtag = document.getElementById('imagearea');
 
-  user_image = event.target.result;;
-  var the_image = reader.readAsDataURL(selectedFile);
+  user_image = event.target.result;
+  reader.onloadend = function () {
+    console.log(reader.result); //this is an ArrayBuffer
+  }
+  user_image = reader.readAsArrayBuffer(selectedFile);
   image_selected = true;
   image_post(image_selected);
 
@@ -312,7 +306,6 @@ function saveNewStatus() {
 
     if(image_selected === false){
 
-alert("TEXTPOST");
     $.ajax({
         type: 'POST',
         url: "/api/v1/textpost",
@@ -333,9 +326,15 @@ alert("TEXTPOST");
     });
   }else {
 
-    alert("IMAGEPOST" + user_image);
+    console.log("IMAGE POST");
+    var data = {
+      "blockstack_id": user_ID,
+      "content": post,
+      "image_uri": user_image
+    }
 
-    /*
+    console.log(data);
+
     $.ajax({
         type: 'POST',
         url: "/api/v1/imagepost",
@@ -351,11 +350,8 @@ alert("TEXTPOST");
         error: function(e) {
           console.log("ERROR");
           console.log(e);
-          console.log(data);
         }
     });
-
-    */
 
   }
 
