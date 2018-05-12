@@ -100,10 +100,7 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
         console.log(data);
       }
     });
-  } else {
-    console.log("REGISTERED USER");
-  }
-
+  } else {console.log("REGISTERED USER");}
 }
 
 
@@ -239,7 +236,8 @@ function secureUserProfile() { ///USER EMAIL PUSH
     success: function(result) {
       console.log("sent user data");
       email.value = ' ';
-      pass.value = " ";
+      pass.value = ' ';
+      conf_pass.value = ' ';
     },
     error: function(e) {
       console.log(e);
@@ -254,7 +252,6 @@ var image_selected = false;
 
 
 function onFileSelected(event) {
-
 
   var selectedFile = event.target.files[0];
   var reader = new FileReader();
