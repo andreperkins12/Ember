@@ -32,7 +32,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
     showProfile(profile)
     block_btn.style.display === 'hidden';
     window.location.href = 'portal.html';
-    userLogin();
 
   } else if (blockstack.isSignInPending()) {
     blockstack.handlePendingSignIn().then(function(userData) {
@@ -62,7 +61,9 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
 
   fetchData(); //fetching data for refresh
   document.getElementById('name-display').innerHTML = user_Name; //Display profile user name
-  document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
+  if (userData.profile.image != null) {
+    document.getElementById('avatar-image').src = userData.profile.image[0].contentUrl; //Display user profile image holder/avatar
+  }
   document.getElementById('home-desc').innerHTML = '<i id="home-hub" class="fa fa-info-circle fa-fw w3-margin-right w3-text-theme"></i>' + userData.profile.description; //Display user description
 
   var home = "Compton";
@@ -81,26 +82,24 @@ function retreiveUserProfile() { //Retreive user Blockstack profile data
     "title": user_Title
   };
 
-  if (counter === 1) {
-
-    $.ajax({
-      url: '/api/v1/usercontact',
-      type: 'POST',
-      data: JSON.stringify(data),
-      headers: {
-        "Content-Type": "application/json"
-      },
-      cache: true,
-      success: function(result) {
-        console.log("sent user data");
-        console.log(result);
-      },
-      error: function(e) {
-        console.log(e);
-        console.log(data);
-      }
-    });
-  } else {console.log("REGISTERED USER");}
+  $.ajax({
+    url: '/api/v1/usercontact',
+    type: 'POST',
+    data: JSON.stringify(data),
+    headers: {
+      "Content-Type": "application/json"
+    },
+    cache: true,
+    success: function(result) {
+      console.log("sent user data");
+      console.log(result);
+      userLogin();
+    },
+    error: function(e) {
+      console.log(e);
+      console.log(data);
+    }
+  });
 }
 
 
